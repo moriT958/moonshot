@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moonshot - Multiplayer Shooting Game</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #0f0f23;
+      font-family: Arial, sans-serif;
+    }
+    #game-container {
+      text-align: center;
+    }
+    #game {
+      border: 2px solid #3498db;
+      border-radius: 4px;
+    }
+    h1 {
+      color: #3498db;
+      margin-bottom: 20px;
+    }
+    #status {
+      color: #888;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>Moonshot</h1>
+    <canvas id="game" width="800" height="600"></canvas>
+    <div id="status">Loading...</div>
+  </div>
+  <!-- Load Moonbit compiled JS first -->
+  <script src="../_build/js/release/build/cmd/main/main.js"></script>
+  <!-- Then load our game loop -->
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "is-main": true,
+  "import": [
+    {
+      "path": "username/moonshot",
+      "alias": "lib"
+    }
+  ],
+  "link": {
+    "js": {
+      "exports": ["game_init", "update", "on_key_down", "on_key_up"],
+      "format": "iife"
+    }
+  }
+}
