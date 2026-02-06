@@ -8,7 +8,7 @@
   ],
   "link": {
     "js": {
-      "exports": ["game_init", "update", "on_key_down", "on_key_up"],
+      "exports": ["game_init", "update", "on_key_down", "on_key_up", "on_ws_message"],
       "format": "iife"
     }
   }
