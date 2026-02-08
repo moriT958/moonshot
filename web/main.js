@@ -18,11 +18,11 @@ function startGame() {
       if (['h', 'j', 'k', 'l', ' '].includes(e.key)) {
         e.preventDefault();
       }
-      on_key_down(e.keyCode);
+      on_key_press(e.keyCode);
     });
 
     document.addEventListener('keyup', (e) => {
-      on_key_up(e.keyCode);
+      on_key_release(e.keyCode);
     });
 
     statusEl.textContent = 'Game running! Use h/j/k/l to move.';

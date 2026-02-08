@@ -1,31 +1,31 @@
-// WebSocket FFI for multiplayer communication
+///|
+/// WebSocket 接続
 
-// External type for WebSocket
-type WebSocket
+///|
+extern "js" fn create_websocket(url : String) -> @websocket.WebSocket =
+  #| (url) => new WebSocket(url)
 
-// WebSocket FFI functions
-pub extern "js" fn ws_connect(url : String) -> WebSocket =
-  #| (url) => {
-  #|   const ws = new WebSocket(url);
-  #|   ws.onopen = () => console.log('WebSocket connected');
-  #|   ws.onerror = (e) => console.error('WebSocket error:', e);
-  #|   ws.onclose = () => console.log('WebSocket closed');
-  #|   ws.onmessage = (e) => {
-  #|     try {
-  #|       on_ws_message(e.data);
-  #|     } catch(err) {
-  #|       console.error('Error handling message:', err);
-  #|     }
-  #|   };
-  #|   return ws;
-  #| }
+///|
+fn ws_connect(url : String) -> @websocket.WebSocket {
+  let ws = create_websocket(url)
 
-pub extern "js" fn ws_send(ws : WebSocket, message : String) -> Unit =
-  #| (ws, msg) => { if (ws.readyState === WebSocket.OPEN) ws.send(msg); }
+  // Set event handlers
+  ws.set_onopen(fn(_event) { @console.log(@core.any("WebSocket connected")) })
+  ws.set_onerror(fn(event) {
+    @console.error(@core.any("WebSocket error:"))
+    @console.error(event)
+  })
+  ws.set_onclose(fn(_event) { @console.log(@core.any("WebSocket closed")) })
+  ws.set_onmessage(fn(event) {
+    let data = @websocket.get_message_data(event)
+    on_ws_message(data)
+  })
+  ws
+}
 
-pub extern "js" fn ws_close(ws : WebSocket) -> Unit =
-  #| (ws) => ws.close()
-
-// Console logging for debugging
-pub extern "js" fn console_log(message : String) -> Unit =
-  #| (msg) => console.log(msg)
+///|
+fn ws_send(ws : @websocket.WebSocket, message : String) -> Unit {
+  if ws.readyState == 1 {
+    ws.send_string(message)
+  }
+}
