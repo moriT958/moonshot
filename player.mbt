@@ -14,26 +14,6 @@ priv struct Player {
 }
 
 ///|
-fn Player::new(
-  id : String,
-  username : String,
-  x : Double,
-  y : Double,
-  color : String,
-) -> Player {
-  {
-    id,
-    username,
-    x,
-    y,
-    radius: 20.0,
-    health: 100,
-    max_health: 100,
-    color,
-  }
-}
-
-///|
 fn Player::is_alive(self : Player) -> Bool {
   self.health > 0
 }

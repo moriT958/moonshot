@@ -40,7 +40,7 @@ func (r *Room) Run() {
 			r.mu.Lock()
 			r.clients[client] = true
 			// Add player to game
-			player := r.game.AddPlayer(client.id, client.username)
+			r.game.AddPlayer(client.id, client.username)
 			r.mu.Unlock()
 
 			// Send init message to the new client
@@ -49,7 +49,6 @@ func (r *Room) Run() {
 				Data: map[string]any{
 					"playerId": client.id,
 					"username": client.username,
-					"player":   player,
 				},
 			}
 			data, _ := json.Marshal(initMsg)
@@ -84,7 +83,7 @@ func (r *Room) Run() {
 
 // gameLoop runs the server-side game simulation
 func (r *Room) gameLoop() {
-	ticker := time.NewTicker(time.Millisecond * 16) // ~60 FPS
+	ticker := time.NewTicker(time.Millisecond * 16)          // ~60 FPS
 	broadcastTicker := time.NewTicker(time.Millisecond * 50) // 20 Hz state broadcast
 	defer ticker.Stop()
 	defer broadcastTicker.Stop()

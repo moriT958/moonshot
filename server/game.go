@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math"
 	"math/rand"
 	"sync/atomic"
 )
@@ -250,11 +249,4 @@ func circlesCollide(x1, y1, r1, x2, y2, r2 float64) bool {
 	distSq := dx*dx + dy*dy
 	radiusSum := r1 + r2
 	return distSq < radiusSum*radiusSum
-}
-
-// distance calculates distance between two points
-func distance(x1, y1, x2, y2 float64) float64 {
-	dx := x2 - x1
-	dy := y2 - y1
-	return math.Sqrt(dx*dx + dy*dy)
 }

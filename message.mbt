@@ -68,52 +68,51 @@ fn parse_init_player(message : String) -> (String, String) {
 
 ///|
 fn handle_state_message(message : String) -> Unit {
+  let parsed : @core.Any = @core.json_parse(message)
+  if @core.is_nullish(parsed) {
+    return
+  }
+  let data = parsed._get("data")
+  if @core.is_nullish(data) {
+    return
+  }
+
   // Parse players from server
-  let player_count = get_player_count(message)
+  let players = data._get("players")
   let new_remote_players : Array[Player] = []
-  for i = 0; i < player_count; i = i + 1 {
-    let p = get_player_at(message, i)
-    if p.id == game.local_player_id {
-      game.local_player = Some(p)
-    } else {
-      new_remote_players.push(p)
+  if @core.is_nullish(players) {
+    ()
+  } else {
+    let player_values = @core.object_values(players)
+    let player_count = player_values.length()
+    for i = 0; i < player_count; i = i + 1 {
+      let p = player_from_any(player_values[i])
+      if p.id == game.local_player_id {
+        game.local_player = Some(p)
+      } else {
+        new_remote_players.push(p)
+      }
     }
   }
   game.remote_players = new_remote_players
 
   // Parse bullets from server
-  let bullet_count = get_bullet_count(message)
+  let bullets = data._get("bullets")
   let new_bullets : Array[Bullet] = []
-  for i = 0; i < bullet_count; i = i + 1 {
-    new_bullets.push(get_bullet_at(message, i))
+  if @core.is_nullish(bullets) {
+    ()
+  } else {
+    let bullet_arr : Array[@core.Any] = @core.array_from(bullets)
+    let bullet_count = bullet_arr.length()
+    for i = 0; i < bullet_count; i = i + 1 {
+      new_bullets.push(bullet_from_any(bullet_arr[i]))
+    }
   }
   game.bullets = new_bullets
 }
 
 ///|
-fn get_player_count(message : String) -> Int {
-  let parsed : @core.Any = @core.json_parse(message)
-  if @core.is_nullish(parsed) {
-    return 0
-  }
-  let data = parsed._get("data")
-  if @core.is_nullish(data) {
-    return 0
-  }
-  let players = data._get("players")
-  if @core.is_nullish(players) {
-    return 0
-  }
-  @core.object_keys(players).length()
-}
-
-///|
-fn get_player_at(message : String, index : Int) -> Player {
-  let parsed : @core.Any = @core.json_parse(message)
-  let data = parsed._get("data")
-  let players = data._get("players")
-  let player_values = @core.object_values(players)
-  let p = player_values[index]
+fn player_from_any(p : @core.Any) -> Player {
   let id : String = p._get("id").cast()
   let username : String = p._get("username").cast()
   let x : Double = p._get("x").cast()
@@ -129,30 +128,7 @@ fn get_player_at(message : String, index : Int) -> Player {
 }
 
 ///|
-fn get_bullet_count(message : String) -> Int {
-  let parsed : @core.Any = @core.json_parse(message)
-  if @core.is_nullish(parsed) {
-    return 0
-  }
-  let data = parsed._get("data")
-  if @core.is_nullish(data) {
-    return 0
-  }
-  let bullets = data._get("bullets")
-  if @core.is_nullish(bullets) {
-    return 0
-  }
-  let arr : Array[@core.Any] = @core.array_from(bullets)
-  arr.length()
-}
-
-///|
-fn get_bullet_at(message : String, index : Int) -> Bullet {
-  let parsed : @core.Any = @core.json_parse(message)
-  let data = parsed._get("data")
-  let bullets = data._get("bullets")
-  let bullet_arr : Array[@core.Any] = @core.array_from(bullets)
-  let b = bullet_arr[index]
+fn bullet_from_any(b : @core.Any) -> Bullet {
   let x : Double = b._get("x").cast()
   let y : Double = b._get("y").cast()
   let radius_val = b._get("radius")

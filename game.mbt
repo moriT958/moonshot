@@ -35,17 +35,6 @@ let game : GameState = {
 pub fn game_init() -> Unit {
   game.ctx = Some(get_context("game"))
 
-  // プレイヤー (自分) を作成
-  game.local_player = Some(
-    Player::new(
-      "local",
-      "Player1",
-      game.canvas_width / 2.0,
-      game.canvas_height / 2.0,
-      "#3498db",
-    ),
-  )
-
   // WebSocket 接続
   let protocol = get_ws_protocol()
   let host = get_host()
