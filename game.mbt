@@ -66,7 +66,7 @@ fn get_ws_protocol() -> String {
 
 ///|
 fn get_host() -> String {
-  @location.location().host
+  "localhost:8080"
 }
 
 ///|

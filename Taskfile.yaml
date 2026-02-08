@@ -1,0 +1,18 @@
+version: "3"
+
+tasks:
+  build:
+    desc: Build Go server and Moonbit JS
+    cmds:
+      - go build -o bin/server ./server
+      - moon build --target js
+
+  serve:
+    desc: Serve frontend files
+    cmds:
+      - python3 -m http.server 3000
+
+  start:
+    desc: Start WebSocket server
+    cmds:
+      - go run ./server
