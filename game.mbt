@@ -99,11 +99,11 @@ fn handle_input() -> Unit {
 }
 
 ///|
-pub fn on_key_press(key_code : Int) -> Unit {
-  game.input.press_key(key_code)
+pub fn on_key_press(key : String) -> Unit {
+  game.input.press_key(key)
 }
 
 ///|
-pub fn on_key_release(key_code : Int) -> Unit {
-  game.input.release_key(key_code)
+pub fn on_key_release(key : String) -> Unit {
+  game.input.release_key(key)
 }

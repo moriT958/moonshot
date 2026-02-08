@@ -4,9 +4,9 @@ package "username/moonshot/cmd/main"
 // Values
 pub fn game_init() -> Unit
 
-pub fn on_key_press(Int) -> Unit
+pub fn on_key_press(String) -> Unit
 
-pub fn on_key_release(Int) -> Unit
+pub fn on_key_release(String) -> Unit
 
 pub fn on_ws_message(String) -> Unit
 

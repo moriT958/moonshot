@@ -16,13 +16,13 @@ pub fn update(delta : Double) -> Unit {
 }
 
 ///|
-pub fn on_key_press(key_code : Int) -> Unit {
-  @lib.on_key_press(key_code)
+pub fn on_key_press(key : String) -> Unit {
+  @lib.on_key_press(key)
 }
 
 ///|
-pub fn on_key_release(key_code : Int) -> Unit {
-  @lib.on_key_release(key_code)
+pub fn on_key_release(key : String) -> Unit {
+  @lib.on_key_release(key)
 }
 
 ///|

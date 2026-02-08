@@ -1,51 +1,53 @@
-// Moonshot - Game loop (Moonbit code is loaded separately)
 
-function startGame() {
-  const statusEl = document.getElementById('status');
+// ゲームモジュールの読み込み確認
+const validateGameModule = () => {
+  if (typeof game_init !== 'function') {
+    throw new Error('Game module not loaded');
+  }
+};
 
-  try {
-    // Check if game functions are available (loaded from moonbit.js)
-    if (typeof game_init !== 'function') {
-      throw new Error('Game module not loaded');
+// ステータス表示の更新
+const updateStatus = (message) => {
+  document.getElementById('status').textContent = message;
+};
+
+// キーボードイベントの設定
+const setupKeyboardControls = () => {
+  document.addEventListener('keydown', (e) => {
+    if (['h', 'j', 'k', 'l', ' '].includes(e.key)) {
+      e.preventDefault();
     }
+    on_key_press(e.key);
+  });
+  document.addEventListener('keyup', (e) => {
+    on_key_release(e.key);
+  });
+};
 
-    // Initialize the game
-    game_init();
-
-    // Set up keyboard event listeners
-    document.addEventListener('keydown', (e) => {
-      // Prevent default for game keys
-      if (['h', 'j', 'k', 'l', ' '].includes(e.key)) {
-        e.preventDefault();
-      }
-      on_key_press(e.keyCode);
-    });
-
-    document.addEventListener('keyup', (e) => {
-      on_key_release(e.keyCode);
-    });
-
-    statusEl.textContent = 'Game running! Use h/j/k/l to move.';
-
-    // Start the game loop
-    let lastTime = performance.now();
-
-    function gameLoop(currentTime) {
-      const delta = (currentTime - lastTime) / 1000.0; // Convert to seconds
-      lastTime = currentTime;
-
-      update(delta);
-
-      requestAnimationFrame(gameLoop);
-    }
-
+// ゲームループの作成・開始
+const createGameLoop = () => {
+  let lastTime = performance.now();
+  const gameLoop = (currentTime) => {
+    const delta = (currentTime - lastTime) / 1000.0;
+    lastTime = currentTime;
+    update(delta);
     requestAnimationFrame(gameLoop);
+  };
+  requestAnimationFrame(gameLoop);
+};
 
+// ゲーム開始
+const startGame = () => {
+  try {
+    validateGameModule();
+    game_init();
+    setupKeyboardControls();
+    updateStatus('Game running! Use h/j/k/l to move.');
+    createGameLoop();
   } catch (error) {
     console.error('Failed to start game:', error);
-    statusEl.textContent = 'Error starting game: ' + error.message;
+    updateStatus('Error starting game: ' + error.message);
   }
-}
+};
 
-// Start the game when the page loads
 window.addEventListener('load', startGame);

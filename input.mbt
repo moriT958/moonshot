@@ -32,20 +32,20 @@ priv enum KeyCode {
 }
 
 ///|
-fn KeyCode::from_int(code : Int) -> KeyCode {
-  match code {
-    72 => H
-    74 => J
-    75 => K
-    76 => L
-    32 => Space
+fn KeyCode::from_string(key : String) -> KeyCode {
+  match key {
+    "h" => H
+    "j" => J
+    "k" => K
+    "l" => L
+    " " => Space
     _ => Other
   }
 }
 
 ///|
-fn InputState::press_key(self : InputState, key_code : Int) -> Unit {
-  match KeyCode::from_int(key_code) {
+fn InputState::press_key(self : InputState, key : String) -> Unit {
+  match KeyCode::from_string(key) {
     H => self.move_left = true
     J => self.move_down = true
     K => self.move_up = true
@@ -56,8 +56,8 @@ fn InputState::press_key(self : InputState, key_code : Int) -> Unit {
 }
 
 ///|
-fn InputState::release_key(self : InputState, key_code : Int) -> Unit {
-  match KeyCode::from_int(key_code) {
+fn InputState::release_key(self : InputState, key : String) -> Unit {
+  match KeyCode::from_string(key) {
     H => self.move_left = false
     J => self.move_down = false
     K => self.move_up = false
